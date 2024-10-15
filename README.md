@@ -115,3 +115,75 @@ System.Timers.Timer timer = new System.Timers.Timer();
 *Примерный вид сцены:*
 
 На второй сцене есть кнока возврата, которая позволяет вернуться на первую сцену и поменять входные данные. Входные данные и график с оценками пользователей будут отображены в левом верхнем углу второй сцены.
+
+Взаимодействие между сценами на данном этапе реализовано так:
+```csharp
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+public class MainMenu : MonoBehaviour
+{
+    public void StartGame()
+    {
+        LoadSceneByName("Main");
+    }
+
+    public void GoMenu()
+        {
+            LoadSceneByName("Enter");
+        }
+
+    public void LoadSceneByName(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName);
+    }
+
+}
+```
+Ввод и сохранение входных данных реализованы так:
+```csharp
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
+using UnityEngine.SceneManagement;
+
+public class TextManager : MonoBehaviour
+{
+    [SerializeField] public TMP_Text InputNumber, InputProbability;
+    [SerializeField] public TMP_InputField inputNumber, inputProbability;
+    [SerializeField] public string myNumber, myProbability;
+
+    public static class DataManager
+    {
+        public static string MyNumber { get; set; }
+        public static string MyProbability { get; set; }
+    }
+
+    public void SaveInputText()
+    {
+        DataManager.MyNumber = inputNumber.text;
+        DataManager.MyProbability = inputProbability.text;
+    }
+
+
+   public void Start()
+   {
+        myNumber = DataManager.MyNumber;
+        myProbability = DataManager.MyProbability;
+        InputNumber.text = "Количество касс: " + myNumber;
+        InputProbability.text = "Вероятность появления покупателя: " + myProbability + "%";
+    }
+}
+```
+Префаб кассира:
+
+![Кассир](https://github.com/user-attachments/assets/6687b411-a3c4-4a7f-98e6-36a7055acaec)
+
+Префаб покупателя:
+
+![Покупатель](https://github.com/user-attachments/assets/38d4731f-8237-4a90-9192-81f753e04acd)
+
